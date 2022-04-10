@@ -1,0 +1,204 @@
+en:
+  activerecord:
+    models:
+      rules:
+        description:
+          overlapping: Overlapping
+          blocking_space: Blocking Space
+          leaving_halfway: Leaving Halfway
+          exceeding_grace_period: Exceeding Parking Grace Period
+          unpaid: Unpaid
+          parking_expired: Exceeding Exit Grace Expired
+      tickets:
+        statuses:
+          opened: Open
+          approved: Accepted
+          rejected: Rejected
+          closed: Closed
+      citation_tickets:
+        statuses:
+          unsettled: Unsettled
+          settled: Settled
+          canceled: Canceled
+          sent_to_court: Sent to court
+      Notifications:
+        templates:
+           car_entrance: Car Entrance
+           car_parked: Car Parked
+           car_exit: Car Exit
+           car_left: Car Left
+           park_will_to_expire: Park Will To Expire
+           park_expired: Park Expired
+           wallet_filled: Wallet Filled
+           success_payment: Success Payment
+           payment_failure: Payment Failure
+           violation_commited: Violation Commited
+           session_cancelled:  Session Cancelled
+           park_started: Park Started
+           park_will_expire: Park Will Expire 
+           payment_reminder: Payment Reminder
+           violation_received: Violation Received
+           violation_resolved: Violation Resolved
+           car_switched: Car Switched
+           vehicle_of_interest: Vehicle Of Interest
+           vehicle_becomes_interest: Vehicle Becomes Interest
+           time_extended: Time Extended
+      ai/log:
+        one: AI Log
+        other: AI Logs
+      message:
+        one: 'Message'
+        templates:
+          dispute_title: 'Dispute message'
+          invoice_title: Park Smart Payment Confirmation
+          invoice_text: |
+            Hi %{user_first_name},
+
+            This email confirms you have paid Park Smart $%{amount} using wallet.
+            It may take a few moments for this transaction to appear in the Transaction History and Messages on your account.
+
+            Payment Details:
+
+            *   Parking Transaction Number: %{parking_session_id}
+            *   Transaction Date: %{payment_details_date}
+            *   Status: Completed
+            *   Payment Transaction Number: %{payment_id}
+
+            If you did not initiate this, or if you believe this is a mistake, please inform us immediately through [Help@EastonMD.gov](mailto:Help@EastonMD.gov) and [410-822-2525](tel:410-822-2525). Otherwise, you can disregard this email.
+
+            Thank you,
+
+            **Park Smart**
+          violation_title: 'Violation message'
+          promotion_title: 'Promotion message'
+      user/notification:
+        one: 'Notification'
+        templates:
+          one: 'None'
+          car_entrance_title: Vehicle entered a parking lot
+          car_entrance_text: A vehicle with LPN %{plate_number} entered the parking lot %{parking_lot_name}
+          car_parked_title: Vehicle successfully parked in parking space
+          car_parked_text:  A vehicle with LPN %{plate_number} parked in the parking space %{parking_slot_number} in the parking lot %{parking_lot_name}
+          car_exit_title: Vehicle successfully exited the parking lot
+          car_exit_text: A vehicle with LPN %{plate_number} exited the parking space %{parking_slot_number} in the parking lot %{parking_lot_name}
+          car_left_title: Vehicle successfully exited from a parking space
+          car_left_text: A vehicle with LPN %{plate_number} left the parking space %{parking_slot_number} in the parking lot %{parking_lot_name}
+          car_switched_title: Vehicle switched parking space
+          car_switched_text: Vehicle with LPN %{plate_number}
+          session_cancelled_title: Parking session cancelled
+          session_cancelled_text: Vehicle with LPN %{plate_number}
+          park_started_title: Parking time started
+          park_started_text: Vehicle with LPN %{plate_number}
+          park_will_to_expire_title: Parking time about to expire
+          park_will_to_expire_text: Parking time for a vehicle with LPN %{plate_number} is about to expire in 10 minutes
+          park_expired_title: Parking time expired
+          park_expired_text: Parking time for a vehicle with LPN %{plate_number} is expired
+          time_extended_title: Parking time extended
+          time_extended_text: Parking time for a vehicle with LPN %{plate_number} is extended for %{minutes_extended} minutes
+          violation_commited_title: Violation committed at %{parking_lot_name}
+          violation_commited_text: A vehicle with LPN %{plate_number} committed a violation of type %{violation_type} 
+          violation_received_title: Violation ticket received
+          violation_received_text: Vehicle with LPN %{plate_number}
+          violation_resolved_title: Violation ticket resolved
+          violation_resolved_text: Vehicle with LPN %{plate_number}
+          violation_assigned_title: Violation assigned to you
+          violation_assigned_text: A violation %{violation_id} assigned to you by user %{user_full_name}
+          violation_canceled_title: Violation canceled for a vehicle with LPN %{plate_number}
+          violation_canceled_text: A violation %{violation_id} canceled for vehicle with LPN %{plate_number} by user %{user_full_name}
+          vehicle_of_interest_title: Vehicle of interest with LPN %{plate_number} at %{parking_lot_name}
+          vehicle_of_interest_text: Vehicle of interest with LPN %{plate_number} at %{parking_lot_name}
+          vehicle_becomes_interest_title: Vehicle becomes a vehicle of interest
+          vehicle_becomes_interest_text: Vehicle with LPN %{plate_number}
+          payment_successful_title: Payment successful
+          payment_successful_text: Successful payment of %{session_payment_amount} is done for a vehicle with LPN %{plate_number}, your remaining wallet balance is %{wallet_amount}
+          payment_failure_title: Payment failed
+          payment_failure_text: Failed payment is done for a vehicle with LPN %{plate_number}. Please fill your wallet and retry again.
+          payment_reminder_title: Payment reminder for extending parking time
+          payment_reminder_text: Vehicle with LPN %{plate_number}
+          wallet_filled_title: Wallet filled successfully
+          wallet_filled_text: Vehicle with LPN %{plate_number}
+      parking/citation_tickets:
+        statuses:
+          unsettled: 'Unsettled'
+          settled: 'Settled'
+          canceled: 'Canceled'
+          sent_to_court: 'Sent to court'
+    attributes:
+      credit_card:
+        number: 'credit card number'
+        cvv: 'credit card cvv'
+    errors:
+      messages:
+        missing: "%{attribute} is required"
+        invalid: "your %{attribute} is invalid"
+        taken: "%{attribute} `%{value}` is already taken"
+        blank: "%{attribute} is required"
+        agency_blank: "%{attribute}: agency is required"
+        too_long:
+          one: "%{attribute} is too long (maximum is 1 character)"
+          other: "%{attribute} is too long (maximum is %{count} characters)"
+        too_short:
+          one: "%{attribute} is too short (minimum is 1 character)"
+          other: "%{attribute} is too short (minimum is %{count} characters)"
+        wrong_length:
+          one: "%{attribute} is the wrong length (should be 1 character)"
+          other: "%{attribute} is the wrong length (should be %{count} characters)"
+        greater_than_or_equal_to: "%{attribute} Must be greater than or equal to %{count}"
+        inclusion: "%{attribute} is not valid"
+        file_size_out_of_range: Your image is too large, max image size is 10mb
+      models:
+        parking/rule:
+          attributes:
+            officer:
+              not_an_officer: 'is not an agency officer'
+              taken: "%{attribute} has already been assigned to another rule"
+        vehicle:
+          attributes:
+            plate_number:
+              invalid: Your plate number is invalid
+        user:
+          attributes:
+            birthday:
+              invalid: You can't use our app if you are under 18 years old
+            status:
+              invalid: 'Invalid status value, must be `active` or `suspended`'
+            avatar: 
+              too_long: 'Your image is too large, max image size is 10mb'
+        address:
+          attributes:
+            state_code:
+              inclusion: 'the state is invalid for the united states'
+        admin:
+          attributes:
+            password: # https://telsoft.atlassian.net/browse/PSAD-412
+              too_long:
+                one: Password must be 7-50 characters only, please try a new one
+                other: Password must be 7-50 characters only, please try a new one
+              too_short:
+                one: Password must be 7-50 characters only, please try a new one
+                other: Password must be 7-50 characters only, please try a new one
+        parking_session:
+          attributes:
+            parking_lot_id:
+              taken: Car is already parked
+        parking_lot:
+          attributes:
+            outline:
+              invalid: "Json file is invalid: %{error}"
+              required: "%{key} is required"
+        camera:
+          attributes:
+            vmarkup:
+              invalid: "Json file is invalid: %{error}"
+        role:
+          attributes:
+            display_name:
+              taken: "Name `%{value}` is already taken"
+        agency_type:
+          attributes:
+            name:
+              taken: A Law Enforcement Agency Type Name with the same name already exists.
+        agency:
+          attributes:
+            name:
+              taken: A Law Enforcement Agency Name with the same name already exists.

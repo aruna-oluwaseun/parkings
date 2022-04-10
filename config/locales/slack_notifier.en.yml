@@ -1,0 +1,15 @@
+en:
+  slack_notifier:
+    ai:
+      ai_event: |
+        Event: %{event}
+        uuid: %{uuid}
+        Environment: %{env}
+      camera_update: |
+        Camera %{number} is %{status}
+        Event: camera
+        Environment: %{env}
+      unrecognized_lpn: |
+        LPN not recognized at parking slot %{parking_slot_id} (UUID %{uuid})
+        Images: %{images_list}
+        Environment: %{env}

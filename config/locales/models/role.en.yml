@@ -1,0 +1,7 @@
+en:
+  role:
+    super_admin: 'Super User'
+    town_manager: 'Town Manager'
+    parking_admin: 'Parking Operator'
+    manager: 'Law Enforcement Agency Manager'
+    officer: 'Law Enforcement Agency Officer'

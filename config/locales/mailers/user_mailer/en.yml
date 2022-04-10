@@ -1,0 +1,10 @@
+en:
+  user_mailer:
+    payment:
+      PAY_WITH_CC: 'Paid using credit/debit card: %{card_network} %{cc_last_digits}.'
+      EC_GOOGLE_PAY: 'Paid with Google Pay'
+      EC_APPLE_PAY: 'Paid with Apple Pay'
+      EC_GOOGLE_PAY_CC: 'Google Pay(%{card_network} %{cc_last_digits})'
+      EC_APPLE_PAY_CC: 'Apple Pay(%{card_network} %{cc_last_digits})'
+      EC_GOOGLE_PAY_PAYPAL: 'Redacted %{paypal_email} with Google Pay.'
+      EC_APPLE_PAY_PAYPAL: 'Redacted %{paypal_email} with Apple Pay.'

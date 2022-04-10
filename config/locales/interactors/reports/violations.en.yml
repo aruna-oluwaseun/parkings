@@ -1,0 +1,12 @@
+en:
+  interactions:
+    reports:
+      opened: 'Opened violations'
+      resolved: 'Resolved violations'
+      issued: 'Issued violations'
+      rejected: 'Rejected violations'
+      approved: 'Approved violations'
+      closed: 'Closed violations'
+      unsettled: 'Unsettled violations'
+      sent_to_court: 'Sent to court violations'
+      canceled: 'Canceled violations'

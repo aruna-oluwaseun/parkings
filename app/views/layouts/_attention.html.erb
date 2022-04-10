@@ -1,0 +1,5 @@
+<% if Rails.env.production? %>
+  <div class="flash-error">
+    Attention: This website is for developers, if you are looking for admin dashboard please go to the following URL: <a href="<%= ENV['DASHBOARD_DOMAIN'] %>"><%= ENV['DASHBOARD_DOMAIN'] %></a>
+  </div>
+<% end %>

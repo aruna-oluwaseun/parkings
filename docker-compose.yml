@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  app:
+    image: parkings-app
+    build:
+      context: .
+      dockerfile: docker/development/Dockerfile
+    env_file:
+      - .env
+      - docker/development/.env
+    volumes:
+      - .:/opt/parkings
+      - /opt/parkings/tmp
+      - ~/.bash_history:/root/.bash_history:delegated # mount your local bash history into container
+    depends_on:
+      - db
+    ports:
+      - 3000:3000
+      - 8808:8808
+    entrypoint: docker/development/entrypoint.sh
+    command: bundle exec puma -C config/puma.rb
+
+  sidekiq:
+    image: parkings-app
+    env_file:
+      - .env
+    environment:
+      DATABASE_HOST: db
+      REDIS_HOST: redis
+      RAILS_LOG_TO_STDOUT: 'true'
+    depends_on:
+      - redis
+    volumes:
+      - .:/opt/parkings
+      - /opt/parkings/tmp
+      - /opt/parkings/tmp/pids
+    command: bundle exec sidekiq -C config/sidekiq.yml
+
+  # webpacker:
+  #   image: parkings-app
+  #   env_file: .env
+  #   ports:
+  #     - 3035:3035
+  #   volumes:
+  #     - .:/opt/parkings:delegated
+  #     - /opt/parkings/tmp
+  #     - node_modules:/opt/parkings/node_modules:delegated
+  #   command: >
+  #     bash -c "yarn install &&
+  #     ./bin/webpack-dev-server"
+
+  db:
+    image: postgres:12.0
+    volumes:
+      - data:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+  redis:
+    image: redis:latest
+    sysctls:
+      - net.core.somaxconn=65535
+    volumes:
+      - redis:/var/lib/redis:delegated
+
+  mailcatcher:
+    image: dockage/mailcatcher:0.7.1
+    ports:
+      - 1080:1080
+
+  test:
+    image: parkings-app
+    volumes:
+      - .:/opt/parkings
+      - /opt/parkings/tmp
+      - /opt/parkings/log
+      - ~/.bash_history:/root/.bash_history:delegated
+    env_file:
+      - docker/test/.env
+    depends_on:
+      - db
+    entrypoint: docker/development/entrypoint.sh
+
+volumes:
+  data:
+  redis:
+  node_modules:

@@ -1,0 +1,5 @@
+en:
+  interactions:
+    statistics:
+      parked_now: "%{count} Parked Now"
+      currently_parked: Vehicles Currently Parked

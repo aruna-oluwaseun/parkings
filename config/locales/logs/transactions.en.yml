@@ -1,0 +1,11 @@
+en:
+  logs:
+    transactions:
+      create: 'created new %{entity} #%{id} %{user}'
+      parking_violation:
+        update: '%{attribute} is changed from %{from} to %{to} by %{user}'
+        uploads:
+          create: '%{entity} uploaded by %{user}'
+          destroy: '%{entity} deleted by %{user}'
+      comment:
+        update: '%{attribute} is changed from %{from} to %{to} by %{user}'

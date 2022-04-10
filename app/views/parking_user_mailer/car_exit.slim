@@ -1,0 +1,14 @@
+tr
+  td
+    p
+      | Hi, #{@first_name}!
+    p
+      | This email is to notify you that your car with the plate number:
+      strong  #{@session.vehicle.plate_number}
+      |  just exited #{@parking_lot.full_address}.
+    p If you did not initiate this, or if you believe this is a mistake, please reach out to us immediately by sending us an email at  <a href = "mailto:Help@EastonMD.gov">Help@EastonMD.gov</a> or by giving us a call at <a href="tel:410-822-2525">410-822-2525</a>.
+      Otherwise, you can disregard this email.
+    p
+      | Thank you,
+    p
+      b Park Smart Team

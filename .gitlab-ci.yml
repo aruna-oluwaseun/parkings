@@ -1,0 +1,220 @@
+image: docker:19.03.1
+
+variables:
+  STG_APP_NAME: telesoft-parkings-app
+  STG_URL: https://parkings.telesoftmobile.com
+  RELEASE_APP_NAME: telesoft-parkings-app-release
+  RELEASE_URL: https://parkings-stable.telesoftmobile.com
+  PROD_URL: https://park.eastonmd.gov
+  PROD_APP_1_NAME: telesoft-parkings-app-1
+  PROD_APP_2_NAME: telesoft-parkings-app-2
+  STG_APP_NEW_VERSION: telesoft-parkings-app-ruby-2.7.1
+
+stages:
+  - test
+  - test_failure
+  - build
+  - deploy
+
+code_test_others_folder:
+  stage: test
+  image: telesoftdevops/devops:telesoft-parkings-app-test-job
+  script: |-
+    # set -x
+    service postgresql start
+    service redis-server start
+    export PARALLEL_TEST_PROCESSORS=3
+    source /opt/parkings/env/.env
+    bundle install --jobs `getconf _NPROCESSORS_ONLN` --without development production
+    RAILS_ENV=test bundle exec rails db:migrate
+    echo "DB_Host="$DATABASE_HOST; echo "DB_Port="$DATABASE_PORT; echo "DB="$DATABASE_TEST; echo "Redis_Host="$REDIS_HOST; echo "Redis_Port="$REDIS_PORT; echo $REDIS_AI_QUEUE
+    echo "CI_MERGE_REQUEST_IID is => $CI_MERGE_REQUEST_IID"
+    RAILS_ENV=test rspec --exclude-pattern "spec/requests/api/" || RAILS_ENV=test rspec --only-failures || result=$?
+  retry: 2
+  artifacts:
+    reports:
+      cobertura: coverage/coverage.xml
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+code_test_dashboard_folder:
+  stage: test
+  image: telesoftdevops/devops:telesoft-parkings-app-test-job
+  script: |-
+    service postgresql start
+    service redis-server start
+    export PARALLEL_TEST_PROCESSORS=3
+    source /opt/parkings/env/.env
+    bundle install --jobs `getconf _NPROCESSORS_ONLN` --without development production
+    RAILS_ENV=test bundle exec rails db:migrate
+    echo "DB_Host="$DATABASE_HOST; echo "DB_Port="$DATABASE_PORT; echo "DB="$DATABASE_TEST; echo "Redis_Host="$REDIS_HOST; echo "Redis_Port="$REDIS_PORT; echo $REDIS_AI_QUEUE
+    echo "CI_MERGE_REQUEST_IID is => $CI_MERGE_REQUEST_IID"
+    RAILS_ENV=test rspec spec/requests/api/dashboard || RAILS_ENV=test rspec --only-failures
+  retry: 2
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+code_test_v1_folder:
+  stage: test
+  image: telesoftdevops/devops:telesoft-parkings-app-test-job
+  script: |-
+    service postgresql start
+    service redis-server start
+    export PARALLEL_TEST_PROCESSORS=3
+    source /opt/parkings/env/.env
+    bundle install --jobs `getconf _NPROCESSORS_ONLN` --without development production
+    RAILS_ENV=test bundle exec rails db:migrate
+    echo "DB_Host="$DATABASE_HOST; echo "DB_Port="$DATABASE_PORT; echo "DB="$DATABASE_TEST; echo "Redis_Host="$REDIS_HOST; echo "Redis_Port="$REDIS_PORT; echo $REDIS_AI_QUEUE
+    echo "CI_MERGE_REQUEST_IID is => $CI_MERGE_REQUEST_IID"
+    RAILS_ENV=test rspec spec/requests/api/v1 || RAILS_ENV=test rspec --only-failures || result=$?
+  retry: 2
+  artifacts:
+    reports:
+      cobertura: coverage/coverage.xml
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+cleanup_code_test:
+  stage: test_failure
+  script:
+    - curl "https://gitlab-bot.telesoftmobile.com/parkings-backend/$CI_MERGE_REQUEST_IID/test-pipeline/fail"
+  when: on_failure
+
+stg_image_build:
+  environment:
+    name: staging
+    url: ${STG_URL}
+  stage: build
+  before_script:
+    - docker login ${CI_REGISTRY} -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}
+  script: |-
+    apk add git curl
+    mkdir temp
+    git -C /tmp clone https://${token_username}:${deployed_token}@gitlab.telesoftmobile.com/devops/psad.git
+    cp /tmp/psad/backend/conf/stg/* ./temp
+    docker build -t telesoftdevops/devops:telesoft-parkings-app-stg .
+    docker push telesoftdevops/devops:telesoft-parkings-app-stg
+  only:
+    - stg
+
+stg_image_deploy:
+  environment:
+    name: staging
+    url: ${STG_URL}
+  stage: deploy
+  before_script:
+    - docker login ${CI_REGISTRY} -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}
+  script:
+    - apk add git curl python3
+    - pip3 install requests
+    - echo "Deploy Image"
+    - curl -X PUT "http:/172.26.16.220:8088/deployments/amount/psad_backend/stg"
+    - sh ci/stg-deploy.sh ${STG_APP_NAME}
+    - git -C /tmp clone https://${token_username}:${deployed_token}@gitlab.telesoftmobile.com/devops/psad.git
+    - python3 /tmp/psad/update_portainer.py ${STG_APP_NAME}
+  only:
+    - stg
+
+release_image_build:
+  environment:
+    name: release
+    url: ${RELEASE_URL}
+  stage: build
+  before_script:
+    - docker login ${CI_REGISTRY} -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}
+  script: |-
+    apk add git curl
+    mkdir temp
+    git -C /tmp clone https://${token_username}:${deployed_token}@gitlab.telesoftmobile.com/devops/psad.git
+    cp /tmp/psad/backend/conf/release/* ./temp
+    docker build -t telesoftdevops/devops:telesoft-parkings-app-release .
+    docker push telesoftdevops/devops:telesoft-parkings-app-release
+  only:
+    - release
+
+release_image_deploy:
+  environment:
+    name: release
+    url: ${RELEASE_URL}
+  stage: deploy
+  before_script:
+    - docker login ${CI_REGISTRY} -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}
+  script:
+    - apk add git curl python3
+    - pip3 install requests
+    - echo "Deploy Image"
+    - curl -X PUT "http:/172.26.16.220:8088/deployments/amount/psad_backend/release"
+    - sh ci/release-deploy.sh ${RELEASE_APP_NAME}
+    - git -C /tmp clone https://${token_username}:${deployed_token}@gitlab.telesoftmobile.com/devops/psad.git
+    - python3 /tmp/psad/update_portainer.py ${RELEASE_APP_NAME}
+  only:
+    - release
+
+prod_image_build:
+  environment:
+    name: prod
+    url: ${PROD_URL}
+  stage: build
+  before_script:
+    - docker login ${CI_REGISTRY} -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}
+  script: |-
+    apk add git curl
+    mkdir temp
+    git -C /tmp clone https://${token_username}:${deployed_token}@gitlab.telesoftmobile.com/devops/psad.git
+    cp /tmp/psad/backend/conf/prod/* ./temp
+    docker build -t telesoftdevops/devops:telesoft-parkings-app-prod .
+    docker push telesoftdevops/devops:telesoft-parkings-app-prod
+  only:
+    - master
+
+prod_image_deploy:
+  environment:
+    name: prod
+    url: ${PROD_URL}
+  stage: deploy
+  before_script:
+    - docker login ${CI_REGISTRY} -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}
+  script:
+    - echo "Deploy image to PROD"
+    - curl -X PUT "http:/146.177.0.220:8088/deployments/amount/psad_backend/master"
+    - sudo ci/prod-deploy.sh ${PROD_APP_1_NAME} ${PROD_APP_2_NAME}
+  only:
+    - master
+  tags:
+    - prod-shell
+
+# Creating and deploying new app based on ruby -v2.7.1
+stg_image_build_ruby_v2.7.1:
+  environment:
+    name: staging
+    url: https://parkingupgrade.telesoftmobile.com
+  stage: build
+  script:
+    - mkdir temp
+    - if [ -d "/tmp/psad" ] ; then [ $(rm -rf /tmp/psad) ]; fi
+    - git -C /tmp clone https://${token_username}:${deployed_token}@gitlab.telesoftmobile.com/devops/psad.git
+    - cp /tmp/psad/backend/conf/stg/* ./temp
+    - docker build -t telesoftdevops/devops:telesoft-parkings-app-stg-ruby-2.7.1 .
+    - docker push telesoftdevops/devops:telesoft-parkings-app-stg-ruby-2.7.1
+    - rm -rf /tmp/psad
+  only:
+    - rails-upgrade
+  tags:
+    - shell
+
+stg_image_deploy_ruby_v2.7.1:
+  environment:
+    name: staging
+    url: https://parkingupgrade.telesoftmobile.com
+  stage: deploy
+  script:
+    - echo "Deploy Image"
+    - if [[ $(docker ps -a | grep ${STG_APP_NEW_VERSION} | wc -l)  = 1 ]] ; then [[ $(docker stop ${STG_APP_NEW_VERSION} && docker rm ${STG_APP_NEW_VERSION}) ]]; fi
+    - echo "Starting container"
+    - docker pull telesoftdevops/devops:telesoft-parkings-app-ruby-2.7.1
+    - docker pull telesoftdevops/devops:telesoft-parkings-app-stg-ruby-2.7.1
+    - docker run -it -d --restart=always --name ${STG_APP_NEW_VERSION} -h ${STG_APP_NEW_VERSION} -p 8071:80 -p 9834:22 telesoftdevops/devops:telesoft-parkings-app-stg-ruby-2.7.1
+  only:
+    - rails-upgrade
+  tags:
+    - shell

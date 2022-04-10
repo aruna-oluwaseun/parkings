@@ -1,0 +1,35 @@
+en:
+  doc:
+    dropdowns:
+      default: Dropdown Values
+      categories_place: Categories List
+
+      dashboard:
+        agency_officers_list: 'Officer list on an agency'
+        categories_place: 'Load categories list for nearby locations/places'
+        country_code: 'Load countries list'
+        manufacturers_list: 'Get manufacturers list'
+        parking_lot_list: "List user's available parking lot"
+        parking_lot_parking_admins_filter: "List user's available parking lot"
+        parking_lot_town_managers_filter: 'Load parking admins list that an admin can see'
+        parking_rule-agencies_list: 'Get a list of all agencies, with parking rules at specific parking_lot_id ?'
+        parking_rule-recipient: 'Get a list of parking rule recipients'
+        parking_session_kiosk_ids_list: 'Load kiosk IDs used on a parking lot'
+        parking_session_statuses_list: 'Get all possible statuses that a parking session can have'
+        payment_methods_list: 'Get a list of all possible payment methods'
+        role_id: 'Get a list of all roles that a user can create'
+        role_type: 'Get a list of all roles types that a user can create'
+        role_names_filter: 'Get a list of all roles'
+        tickets_agencies_list: 'Get a list of all agencies that an admin can see, associated to a list of tickets'
+        tickets_officers_filter: 'Get a list of all officers that an admin can see, associated to a list of tickets'
+        tickets_statuses_field: 'Get a list of all statuses on the tickets'
+        tickets_types_field: 'Get a list of all statuses on the tickets'
+        admins_by_role-manager: 'Get a list of all managers'
+        admins_by_role-officer: 'Get a list of all officer'
+        admins_by_role-parking_admin: 'Get a list of all parking admins'
+        admins_by_role-town_manager: 'Get a list of all town managers'
+        agency_list: 'Get a list of all agency available in the system'
+        agency_type: 'Get a list of all agency types'
+        parking_lots_without_agency_list: 'Get a list of all parking lot without assigned agency'
+    auth:
+      token: Auth token from users#sign_in'

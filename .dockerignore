@@ -1,0 +1,9 @@
+.git
+.gitignore
+.gitlab-ci.yml
+ci
+ci/*
+Dockerfile
+*.md
+tmp
+node_modules

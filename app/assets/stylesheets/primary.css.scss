@@ -1,0 +1,14 @@
+@import 'bootstrap';
+@import 'font-awesome';
+
+.clickable-row:hover {
+    cursor: pointer;
+}
+
+.flash-error {
+  background-color: #fbe3e4;
+  color: #645b5b;
+  display: block;
+  padding: 0.75em;
+  text-align: center;
+}

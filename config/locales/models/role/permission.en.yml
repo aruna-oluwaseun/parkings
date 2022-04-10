@@ -1,0 +1,21 @@
+en:
+  permission:
+    permission_list:
+      attributes:
+        role: Roles
+        admin: Users
+        user: Subscribers
+        vehicle: Vehicles
+        parking_lot: Parking Lots
+        agency: Law Enforcement Agencies
+        agency_type: Law Enforcement Agency Types
+        comment: Comments
+        coordinate_parking_plan: Coordinate Parking Plans
+        payment: Payments
+        dispute: Disputes
+        parking/violation: Violations
+        message: Messages
+        camera: Streamings
+        report: System Reports
+        user/notification: Notification Configurations
+        parking/citation_ticket: Citation Ticket

@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@rails/webpacker": "3.5",
+    "puppeteer": "^4.0.0"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "2.11.2"
+  }
+}

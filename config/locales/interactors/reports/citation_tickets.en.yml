@@ -1,0 +1,8 @@
+en:
+  interactions:
+    reports:
+      citation_tickets:
+        unsettled: 'Open Citation Tickets'
+        settled: 'Resolved Citation Tickets'
+        sent_to_court: 'Sent To Court Citation Tickets'
+        canceled: 'Canceled Citation Tickets'
