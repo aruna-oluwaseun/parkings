@@ -2,6 +2,8 @@
 ruby '~> 2.7.8'
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+gem 'ffi', '~> 1.15.5'
+
 gem 'dotenv-rails', require: 'dotenv/rails-now'
 gem 'rails', '~> 5.2.1'
 gem 'pg'
