@@ -11,10 +11,10 @@ Sidekiq.configure_client do |config|
 end
 
 require 'sidekiq/web'
-Sidekiq::Web.set :session_secret, ENV['SECRET_KEY_BASE']
-Sidekiq::Web.set :sessions,       Rails.application.config.session_options
+#Sidekiq::Web.set :session_secret, ENV['SECRET_KEY_BASE']
+#Sidekiq::Web.set :sessions,       Rails.application.config.session_options
 Sidekiq::Web.class_eval do
-  use Rack::Protection, except: :http_origin
+  #use Rack::Protection, except: :http_origin
 end
 # set the only locale to en_US (sidekiq web UI)
 module Sidekiq

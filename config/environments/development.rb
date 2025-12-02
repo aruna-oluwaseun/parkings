@@ -96,4 +96,5 @@ Rails.application.configure do
   config.action_controller.asset_host = 'http://localhost:3000'
 
   config.action_mailer.asset_host = 'http://localhost:3000'
+   config.web_console.whitelisted_ips = '0.0.0.0/0'
 end

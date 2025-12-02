@@ -10,13 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_14_105619) do
+ActiveRecord::Schema.define(version: 2021_01_25_123214) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "cube"
   enable_extension "earthdistance"
-  enable_extension "hstore"
   enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -296,7 +295,6 @@ ActiveRecord::Schema.define(version: 2021_02_14_105619) do
   end
 
   create_table "parking_citation_tickets", force: :cascade do |t|
-    t.string "description"
     t.bigint "violation_id"
     t.integer "status", default: 0
     t.datetime "created_at", null: false
@@ -580,7 +578,6 @@ ActiveRecord::Schema.define(version: 2021_02_14_105619) do
     t.bigint "manufacturer_id"
     t.string "registration_state"
     t.string "registration_card"
-    t.boolean "exempted"
     t.index ["manufacturer_id"], name: "index_vehicles_on_manufacturer_id"
   end
 

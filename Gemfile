@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-ruby '~> 2.5.1'
+ruby '~> 2.7.8'
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 gem 'dotenv-rails', require: 'dotenv/rails-now'
@@ -42,7 +42,8 @@ gem 'api-pagination'
 gem 'faker'
 
 # background processing, requires redis
-gem 'sidekiq'
+gem 'sidekiq', '~> 6.5'
+
 
 # Log format
 gem 'lograge'

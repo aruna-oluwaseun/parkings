@@ -70,7 +70,7 @@ require 'pagy/extras/array'
 # See http://ddnexus.github.io/pagy/extras/headers
 
 require 'pagy/extras/headers'
-Pagy::VARS[:headers] = { page: 'X-Page', items: 'X-Per-Page', count: 'X-Total', pages: 'Total-Pages' }     # default
+Pagy::DEFAULT[:headers] = { page: 'X-Page', items: 'X-Per-Page', count: 'X-Total', pages: 'Total-Pages' }     # default
 
 # Support extra: Extra support for features like: incremental, infinite, auto-scroll pagination
 # See https://ddnexus.github.io/pagy/extras/support
@@ -85,7 +85,7 @@ Pagy::VARS[:headers] = { page: 'X-Page', items: 'X-Per-Page', count: 'X-Total', 
 # Overflow extra: Allow for easy handling of overflowing pages
 # See https://ddnexus.github.io/pagy/extras/overflow
 require 'pagy/extras/overflow'
-Pagy::VARS[:overflow] = :last_page    # default :empty_page (other options: :last_page and :exception)
+Pagy::DEFAULT[:overflow] = :last_page    # default :empty_page (other options: :last_page and :exception)
 
 # Metadata extra: Provides the pagination metadata to Javascript frameworks like Vue.js, react.js, etc.
 # See https://ddnexus.github.io/pagy/extras/metadata
@@ -107,7 +107,7 @@ Pagy::VARS[:overflow] = :last_page    # default :empty_page (other options: :las
 # Instance variables
 # See https://ddnexus.github.io/pagy/api/pagy#instance-variables
 
-Pagy::VARS[:items] = 10                                   # default
+Pagy::DEFAULT[:items] = 10                                   # default
 
 # Other Variables
 # See https://ddnexus.github.io/pagy/api/pagy#other-variables
