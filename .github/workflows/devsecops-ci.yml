@@ -41,6 +41,9 @@ jobs:
           ruby-version: '2.7'
           bundler-cache: true
 
+      - name: Update RubyGems (for ffi compatibility)
+        run: gem update --system 3.3.22
+
       - name: Install gems
         run: bundle install --without production
 
