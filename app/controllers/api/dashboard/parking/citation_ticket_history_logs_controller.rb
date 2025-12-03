@@ -1,4 +1,5 @@
-module Dashboard
+module Api
+ module Dashboard
     module Parking
       class CitationTicketHistoryLogsController < ApplicationController
         api :GET, '/api/dashboard/parking/citation_tickets/:citation_ticket_id/citation_ticket_history_logs'
@@ -17,4 +18,5 @@ module Dashboard
         end
       end
     end
- end
+  end
+end
