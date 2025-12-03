@@ -57,8 +57,8 @@ jobs:
         run: |
           bundle exec rspec || echo "No tests configured"
 
-      - name: Install Brakeman
-        run: gem install brakeman
+      - name: Install Brakeman (Ruby 2.7 compatible)
+              run: gem install brakeman -v 5.4.1
 
       - name: Run Brakeman SAST scan
         run: brakeman -o brakeman-report.json
