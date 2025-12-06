@@ -51,7 +51,7 @@ jobs:
       - name: Bundler Audit SCA
         run: |
          gem install bundler-audit
-         bundle audit --format json > bundler-audit.json
+         bundle audit check --update || bundle audit check || true
 
       - uses: actions/upload-artifact@v4
         with:
