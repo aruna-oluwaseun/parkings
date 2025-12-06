@@ -60,7 +60,7 @@ jobs:
       - name: Install Brakeman (Ruby 2.7 compatible)
         run: gem install brakeman -v 5.4.1
 
-            - name: Run Brakeman SAST scan
+      - name: Run Brakeman SAST scan
         run: |
           brakeman -o brakeman-report.json
           status=$?
