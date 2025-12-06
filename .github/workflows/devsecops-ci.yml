@@ -62,6 +62,9 @@ jobs:
 
       - name: Run Brakeman SAST scan
         run: brakeman -o brakeman-report.json || true
+        
+      - name: List files after Brakeman
+        run: ls -la
           
       - name: Upload Brakeman report
         uses: actions/upload-artifact@v4
