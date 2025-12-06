@@ -48,12 +48,15 @@ jobs:
       - name: Install gems
         run: bundle install --without production
 
-      - name: Install bundler-audit (SCA)
-        run: gem install bundler-audit
-
-      - name: Run bundler-audit SCA
+      - name: Bundler Audit SCA
         run: |
-          bundle audit check --update || true
+        gem install bundler-audit
+        bundle audit --format json > bundler-audit.json
+
+        - uses: actions/upload-artifact@v4
+        with:
+            name: bundler-audit
+            path: bundler-audit.json
 
       - name: Prepare database
         run: |
