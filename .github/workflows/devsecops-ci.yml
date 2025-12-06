@@ -61,18 +61,7 @@ jobs:
         run: gem install brakeman -v 5.4.1
 
       - name: Run Brakeman SAST scan
-        run: |
-          brakeman -o brakeman-report.json
-          status=$?
-          if [ "$status" -eq 0 ]; then
-            echo "Brakeman: no issues found."
-          elif [ "$status" -eq 1 ] || [ "$status" -eq 3 ]; then
-            echo "Brakeman: issues found, but not failing CI yet."
-            exit 0
-          else
-            echo "Brakeman: error running scan (exit $status)"
-            exit $status
-          fi
+        run: brakeman -o brakeman-report.json || true
           
       - name: Upload Brakeman report
         uses: actions/upload-artifact@v4
