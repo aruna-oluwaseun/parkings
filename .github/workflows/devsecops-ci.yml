@@ -53,7 +53,7 @@ jobs:
          gem install bundler-audit
          bundle audit --format json > bundler-audit.json
 
-        - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
             name: bundler-audit
             path: bundler-audit.json
