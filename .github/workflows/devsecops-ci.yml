@@ -48,6 +48,13 @@ jobs:
       - name: Install gems
         run: bundle install --without production
 
+      - name: Install bundler-audit (SCA)
+        run: gem install bundler-audit
+
+      - name: Run bundler-audit SCA
+        run: |
+          bundle audit check --update || true
+
       - name: Prepare database
         run: |
           bundle exec rails db:create
