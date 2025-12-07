@@ -42,42 +42,61 @@ jobs:
           ruby-version: '2.7'
           bundler-cache: true
 
-      - name: Disable bundler deployment mode
-        run: bundle config unset deployment || true
-
       - name: Install gems
         run: bundle install --without production
 
-      - name: Bundler Audit SCA
-        run: |
-         gem install bundler-audit
-         bundle audit check --update || bundle audit check || true
-
-      - uses: actions/upload-artifact@v4
-        with:
-            name: bundler-audit
-            path: bundler-audit.json
-
       - name: Prepare database
         run: |
-          bundle exec rails db:create
-          bundle exec rails db:migrate
+          bundle exec rails db:create db:migrate
 
-      - name: Run RSpec tests
+      - name: Run test suite
         run: |
-          bundle exec rspec || echo "No tests configured"
+          if bundle exec rspec; then
+            echo "Tests passed ✅"
+          else
+            echo "Tests failed or not configured. Not failing CI (learning mode)."
+          fi
 
-      - name: Install Brakeman (Ruby 2.7 compatible)
+      # 6) SAST – Brakeman
+      - name: Install Brakeman
         run: gem install brakeman -v 5.4.1
 
       - name: Run Brakeman SAST scan
         run: brakeman -o brakeman-report.json || true
-        
-      - name: List files after Brakeman
-        run: ls -la
-          
+
       - name: Upload Brakeman report
         uses: actions/upload-artifact@v4
         with:
           name: brakeman-report
           path: brakeman-report.json
+
+      # 7) SCA (light) – bundler-audit
+      - name: Install bundler-audit
+        run: gem install bundler-audit
+
+      - name: Run bundler-audit SCA
+        run: |
+          bundle audit check --update || bundle audit check || true
+
+      - name: Save bundler-audit report
+        run: bundle audit --format json > bundler-audit.json || true
+
+      - name: Upload bundler-audit report
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundler-audit
+          path: bundler-audit.json
+
+      - name: Set up Snyk
+        uses: snyk/actions/setup@v4
+
+      - name: Run Snyk SCA scan
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk test --severity-threshold=high || true
+
+      - name: Snyk monitor (snapshot for dashboard)
+        if: github.ref == 'refs/heads/main'
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk monitor || true
